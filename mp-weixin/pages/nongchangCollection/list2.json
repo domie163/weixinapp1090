@@ -1,0 +1,8 @@
+{
+  "navigationBarBackgroundColor": "#276ace",
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "我的农场收藏",
+  "usingComponents": {
+    "mescroll-uni": "/components/mescroll-uni/mescroll-uni"
+  }
+}

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.NongchangDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.nongchang_name as nongchangName
+        ,a.nongchang_photo as nongchangPhoto
+        ,a.nongchang_video as nongchangVideo
+        ,a.yonghu_id as yonghuId
+        ,a.nongchang_types as nongchangTypes
+        ,a.nongchang_biaoqian as nongchangBiaoqian
+        ,a.nongchang_tr as nongchangTr
+        ,a.nongchang_turang as nongchangTurang
+        ,a.nongchang_wsd as nongchangWsd
+        ,a.nongchang_wenshidu as nongchangWenshidu
+        ,a.nongchang_fs as nongchangFs
+        ,a.nongchang_fengshu as nongchangFengshu
+        ,a.nongchang_clicknum as nongchangClicknum
+        ,a.zan_number as zanNumber
+        ,a.cai_number as caiNumber
+        ,a.nongchang_content as nongchangContent
+        ,a.nongchang_delete as nongchangDelete
+        ,a.insert_time as insertTime
+        ,a.create_time as createTime
+    </sql>
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.NongchangView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        <!-- 级联表的字段 -->
+        ,yonghu.yonghu_name as yonghuName
+        ,yonghu.yonghu_phone as yonghuPhone
+        ,yonghu.yonghu_id_number as yonghuIdNumber
+        ,yonghu.yonghu_photo as yonghuPhoto
+        ,yonghu.yonghu_email as yonghuEmail
+        ,yonghu.yonghu_delete as yonghuDelete
+
+        FROM nongchang  a
+        left JOIN yonghu yonghu ON a.yonghu_id = yonghu.id
+
+        <where>
+            <if test="params.ids != null">
+                and a.id in
+                <foreach item="item" index="index" collection="params.ids" open="(" separator="," close=")">
+                #{item}
+                </foreach>
+            </if>
+            <if test=" params.nongchangName != '' and params.nongchangName != null and params.nongchangName != 'null' ">
+                and a.nongchang_name like CONCAT('%',#{params.nongchangName},'%')
+            </if>
+            <if test=" params.nongchangVideo != '' and params.nongchangVideo != null and params.nongchangVideo != 'null' ">
+                and a.nongchang_video like CONCAT('%',#{params.nongchangVideo},'%')
+            </if>
+            <if test="params.yonghuId != null and params.yonghuId != ''">
+                and (
+                    a.yonghu_id = #{params.yonghuId}
+                )
+            </if>
+            <if test="params.nongchangTypes != null and params.nongchangTypes != ''">
+                and a.nongchang_types = #{params.nongchangTypes}
+            </if>
+            <if test=" params.nongchangBiaoqian != '' and params.nongchangBiaoqian != null and params.nongchangBiaoqian != 'null' ">
+                and a.nongchang_biaoqian like CONCAT('%',#{params.nongchangBiaoqian},'%')
+            </if>
+            <if test="params.nongchangTrStart != null and params.nongchangTrStart != ''">
+                <![CDATA[  and a.nongchang_tr >= #{params.nongchangTrStart}   ]]>
+            </if>
+            <if test="params.nongchangTrEnd != null and params.nongchangTrEnd != ''">
+                <![CDATA[  and a.nongchang_tr <= #{params.nongchangTrEnd}   ]]>
+            </if>
+             <if test="params.nongchangTr != null and params.nongchangTr != ''">
+                and a.nongchang_tr = #{params.nongchangTr}
+             </if>
+            <if test="params.nongchangTurangStart != null and params.nongchangTurangStart != ''">
+                <![CDATA[  and a.nongchang_turang >= #{params.nongchangTurangStart}   ]]>
+            </if>
+            <if test="params.nongchangTurangEnd != null and params.nongchangTurangEnd != ''">
+                <![CDATA[  and a.nongchang_turang <= #{params.nongchangTurangEnd}   ]]>
+            </if>
+             <if test="params.nongchangTurang != null and params.nongchangTurang != ''">
+                and a.nongchang_turang = #{params.nongchangTurang}
+             </if>
+            <if test="params.nongchangWsdStart != null and params.nongchangWsdStart != ''">
+                <![CDATA[  and a.nongchang_wsd >= #{params.nongchangWsdStart}   ]]>
+            </if>
+            <if test="params.nongchangWsdEnd != null and params.nongchangWsdEnd != ''">
+                <![CDATA[  and a.nongchang_wsd <= #{params.nongchangWsdEnd}   ]]>
+            </if>
+             <if test="params.nongchangWsd != null and params.nongchangWsd != ''">
+                and a.nongchang_wsd = #{params.nongchangWsd}
+             </if>
+            <if test="params.nongchangWenshiduStart != null and params.nongchangWenshiduStart != ''">
+                <![CDATA[  and a.nongchang_wenshidu >= #{params.nongchangWenshiduStart}   ]]>
+            </if>
+            <if test="params.nongchangWenshiduEnd != null and params.nongchangWenshiduEnd != ''">
+                <![CDATA[  and a.nongchang_wenshidu <= #{params.nongchangWenshiduEnd}   ]]>
+            </if>
+             <if test="params.nongchangWenshidu != null and params.nongchangWenshidu != ''">
+                and a.nongchang_wenshidu = #{params.nongchangWenshidu}
+             </if>
+            <if test="params.nongchangFsStart != null and params.nongchangFsStart != ''">
+                <![CDATA[  and a.nongchang_fs >= #{params.nongchangFsStart}   ]]>
+            </if>
+            <if test="params.nongchangFsEnd != null and params.nongchangFsEnd != ''">
+                <![CDATA[  and a.nongchang_fs <= #{params.nongchangFsEnd}   ]]>
+            </if>
+             <if test="params.nongchangFs != null and params.nongchangFs != ''">
+                and a.nongchang_fs = #{params.nongchangFs}
+             </if>
+            <if test="params.nongchangFengshuStart != null and params.nongchangFengshuStart != ''">
+                <![CDATA[  and a.nongchang_fengshu >= #{params.nongchangFengshuStart}   ]]>
+            </if>
+            <if test="params.nongchangFengshuEnd != null and params.nongchangFengshuEnd != ''">
+                <![CDATA[  and a.nongchang_fengshu <= #{params.nongchangFengshuEnd}   ]]>
+            </if>
+             <if test="params.nongchangFengshu != null and params.nongchangFengshu != ''">
+                and a.nongchang_fengshu = #{params.nongchangFengshu}
+             </if>
+            <if test="params.nongchangClicknumStart != null and params.nongchangClicknumStart != ''">
+                <![CDATA[  and a.nongchang_clicknum >= #{params.nongchangClicknumStart}   ]]>
+            </if>
+            <if test="params.nongchangClicknumEnd != null and params.nongchangClicknumEnd != ''">
+                <![CDATA[  and a.nongchang_clicknum <= #{params.nongchangClicknumEnd}   ]]>
+            </if>
+             <if test="params.nongchangClicknum != null and params.nongchangClicknum != ''">
+                and a.nongchang_clicknum = #{params.nongchangClicknum}
+             </if>
+            <if test="params.zanNumberStart != null and params.zanNumberStart != ''">
+                <![CDATA[  and a.zan_number >= #{params.zanNumberStart}   ]]>
+            </if>
+            <if test="params.zanNumberEnd != null and params.zanNumberEnd != ''">
+                <![CDATA[  and a.zan_number <= #{params.zanNumberEnd}   ]]>
+            </if>
+             <if test="params.zanNumber != null and params.zanNumber != ''">
+                and a.zan_number = #{params.zanNumber}
+             </if>
+            <if test="params.caiNumberStart != null and params.caiNumberStart != ''">
+                <![CDATA[  and a.cai_number >= #{params.caiNumberStart}   ]]>
+            </if>
+            <if test="params.caiNumberEnd != null and params.caiNumberEnd != ''">
+                <![CDATA[  and a.cai_number <= #{params.caiNumberEnd}   ]]>
+            </if>
+             <if test="params.caiNumber != null and params.caiNumber != ''">
+                and a.cai_number = #{params.caiNumber}
+             </if>
+            <if test=" params.nongchangContent != '' and params.nongchangContent != null and params.nongchangContent != 'null' ">
+                and a.nongchang_content like CONCAT('%',#{params.nongchangContent},'%')
+            </if>
+            <if test="params.nongchangDeleteStart != null and params.nongchangDeleteStart != ''">
+                <![CDATA[  and a.nongchang_delete >= #{params.nongchangDeleteStart}   ]]>
+            </if>
+            <if test="params.nongchangDeleteEnd != null and params.nongchangDeleteEnd != ''">
+                <![CDATA[  and a.nongchang_delete <= #{params.nongchangDeleteEnd}   ]]>
+            </if>
+             <if test="params.nongchangDelete != null and params.nongchangDelete != ''">
+                and a.nongchang_delete = #{params.nongchangDelete}
+             </if>
+            <if test=" params.insertTimeStart != '' and params.insertTimeStart != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(a.insert_time) >= UNIX_TIMESTAMP(#{params.insertTimeStart}) ]]>
+            </if>
+            <if test=" params.insertTimeEnd != '' and params.insertTimeEnd != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(a.insert_time) <= UNIX_TIMESTAMP(#{params.insertTimeEnd}) ]]>
+            </if>
+            <if test="params.insertTime != null and params.insertTime != ''">
+                and a.insert_time = #{params.insertTime}
+            </if>
+
+                <!-- 判断用户的id不为空 -->
+            <if test=" params.yonghuIdNotNull != '' and params.yonghuIdNotNull != null and params.yonghuIdNotNull != 'null' ">
+                and a.yonghu_id IS NOT NULL
+            </if>
+            <if test=" params.yonghuName != '' and params.yonghuName != null and params.yonghuName != 'null' ">
+                and yonghu.yonghu_name like CONCAT('%',#{params.yonghuName},'%')
+            </if>
+            <if test=" params.yonghuPhone != '' and params.yonghuPhone != null and params.yonghuPhone != 'null' ">
+                and yonghu.yonghu_phone like CONCAT('%',#{params.yonghuPhone},'%')
+            </if>
+            <if test=" params.yonghuIdNumber != '' and params.yonghuIdNumber != null and params.yonghuIdNumber != 'null' ">
+                and yonghu.yonghu_id_number like CONCAT('%',#{params.yonghuIdNumber},'%')
+            </if>
+            <if test=" params.yonghuEmail != '' and params.yonghuEmail != null and params.yonghuEmail != 'null' ">
+                and yonghu.yonghu_email like CONCAT('%',#{params.yonghuEmail},'%')
+            </if>
+            <if test="params.yonghuDeleteStart != null  and params.yonghuDeleteStart != '' ">
+                <![CDATA[  and yonghu.yonghu_delete >= #{params.yonghuDeleteStart}   ]]>
+            </if>
+            <if test="params.yonghuDeleteEnd != null  and params.yonghuDeleteEnd != '' ">
+                <![CDATA[  and yonghu.yonghu_delete <= #{params.yonghuDeleteEnd}   ]]>
+            </if>
+            <if test="params.yonghuDelete != null  and params.yonghuDelete != '' ">
+                and yonghu.yonghu_delete = #{params.yonghuDelete}
+            </if>
+            <if test=" params.insertTimeStart != '' and params.insertTimeStart != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(yonghu.insert_time) >= UNIX_TIMESTAMP(#{params.insertTimeStart}) ]]>
+            </if>
+            <if test=" params.insertTimeEnd != '' and params.insertTimeEnd != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(yonghu.insert_time) <= UNIX_TIMESTAMP(#{params.insertTimeEnd}) ]]>
+            </if>
+            <if test="params.insertTime != null and params.insertTime != ''">
+                and a.insert_time = #{params.insertTime}
+            </if>
+        </where>
+        order by a.${params.sort} ${params.order}
+    </select>
+
+</mapper>
